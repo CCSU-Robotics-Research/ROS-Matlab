@@ -27,7 +27,7 @@ msg = rosmessage('std_msgs/String');
 % Set the data field of the message to 'Hello, world!'
 msg.Data = 'Hello, world!';
 
-
+% Publish the message on the 'chatter' topic
 send(pub,msg);
 
 % Wait for 1 second to allow the message to be received by the subscriber
