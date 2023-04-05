@@ -24,7 +24,7 @@ sub = ros.Subscriber(node2,'/chatter','std_msgs/String');
 % Create an empty ROS message of the type 'std_msgs/String'
 msg = rosmessage('std_msgs/String');
 
-% Set the data field of the message to 'Hello, world!'
+% Set the data field of the message to  'Hello, world!'
 msg.Data = 'Hello, world!';
 
 % Publish the message on the 'chatter' topic
