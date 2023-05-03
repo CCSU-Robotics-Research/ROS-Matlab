@@ -1,0 +1,50 @@
+function exampleHelperVisualizeRobotPoses()
+
+% Load the robot model and environment
+[franka,config] = exampleHelperLoadPickAndPlaceRRT();
+
+% Initialize ROS
+rosinit
+
+% Create a publisher for the robot's joint states
+pub = rospublisher('/franka/joint_states', 'sensor_msgs/JointState');
+
+% Set the robot arm in its home position
+homePos = homeConfiguration(franka);
+jointMsg = rosmessage(pub);
+jointMsg.Name = franka.JointNames;
+jointMsg.Position = homePos';
+jointMsg.Velocity = zeros(size(homePos))';
+jointMsg.Effort = zeros(size(homePos))';
+send(pub,jointMsg);
+
+% Create a robot visualizer
+robotViz = ExampleHelperRoboticsVisualization(franka);
+robotViz.show(env);
+
+% Loop to publish random robot joint states
+for i = 1:50
+    % Generate a random set of joint angles
+    jointPos = randn(1,7)*0.1 + homePos';
+    
+    % Create a JointState message and set its joint positions
+    jointMsg = rosmessage(pub);
+    jointMsg.Name = franka.JointNames;
+    jointMsg.Position = jointPos';
+    jointMsg.Velocity = zeros(size(homePos))';
+    jointMsg.Effort = zeros(size(homePos))';
+    
+    % Publish the message
+    send(pub,jointMsg);
+    
+    % Visualize the robot in the new joint configuration
+    robotViz.show(env,'JointAngles',jointPos');
+    
+    % Wait for a short time
+    pause(0.1);
+end
+
+% Shutdown ROS
+rosshutdown
+
+end

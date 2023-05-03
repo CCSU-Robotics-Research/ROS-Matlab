@@ -22,7 +22,6 @@ end
 
 
 
-
 % Create a ROS node with the name 'publisher_node_2'
 node1 = ros.Node('publisher_node_2');
 
